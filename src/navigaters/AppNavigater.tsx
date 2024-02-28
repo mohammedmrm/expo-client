@@ -1,19 +1,9 @@
-import Home from "@/screens/Home";
-import Profile from "@/screens/Profile";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import BottomNavigater from "./BottomNavigater";
-const { Navigator, Screen } = createStackNavigator();
-
-const HomeNavigator = () => (
-  <Navigator screenOptions={{ headerShown: false }}>
-    <Screen name="Home" component={Home} />
-    <Screen name="Profile" component={Profile} />
-  </Navigator>
-);
+import Login from "@/screens/Login";
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <BottomNavigater />
+    <Login />
   </NavigationContainer>
 );

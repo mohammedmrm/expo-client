@@ -42,5 +42,21 @@
         "text-caption-2-font-weight": "600",
         "text-caption-2-font-family": "f-SemiBold"
     },
-    "components": {}
+    "components": {
+        "Button": {
+            "meta": {},
+            "appearances": {
+                "filled": {
+                    "mapping": {},
+                    "variantGroups": {
+                        "status": {
+                            "primary": {
+                                "backgroundColor": "color-primary-default"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

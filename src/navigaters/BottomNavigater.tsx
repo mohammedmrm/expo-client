@@ -1,22 +1,23 @@
 import Home from "@/screens/Home";
 import Profile from "@/screens/Profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useTheme } from "@ui-kitten/components";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import theme from "../../assets/theme";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomNavigater() {
+  const theme = useTheme();
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: theme["color-primary-500"],
       }}
     >
       <Tab.Screen
-        name="Feed"
-        component={Profile}
+        name="Home"
+        component={Home}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (

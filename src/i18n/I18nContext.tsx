@@ -5,6 +5,7 @@ import React, { createContext, useContext, useRef } from "react";
 import { initReactI18next } from "react-i18next";
 
 i18n.use(initReactI18next).init({
+  compatibilityJSON: "v3",
   resources: resources,
   //debug: true,
   lng: Localization.getLocales()[0].languageCode || "ar",
@@ -14,7 +15,7 @@ i18n.use(initReactI18next).init({
   },
 });
 
-const MainContext = createContext({
+const I18nContext = createContext({
   i18n,
   setlng: (language: string) => {},
 });
@@ -23,8 +24,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const MainProvider: React.FC<Props> = ({ children }) => {
-  const supportedLocales = useRef(["ar", "en", "ku"]);
+export const I18nProvider: React.FC<Props> = ({ children }) => {
+  const supportedLocales = useRef(Object.keys(resources));
   const setlng = (lng: string) => {
     if (supportedLocales.current.includes(lng)) {
       i18n.changeLanguage(lng);
@@ -32,22 +33,22 @@ export const MainProvider: React.FC<Props> = ({ children }) => {
   };
 
   return (
-    <MainContext.Provider
+    <I18nContext.Provider
       value={{
         i18n,
         setlng,
       }}
     >
       {children}
-    </MainContext.Provider>
+    </I18nContext.Provider>
   );
 };
 
-export function useMainContext() {
-  const context = useContext(MainContext);
+export function useI18nContext() {
+  const context = useContext(I18nContext);
 
   if (!context) {
-    throw new Error("useMainContext must be used within MainProvider");
+    throw new Error("useI18nContext must be used within MainProvider");
   }
 
   return context;

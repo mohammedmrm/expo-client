@@ -1,3 +1,15 @@
 {
-    "language": "الكرديه"
+    "language": "الكرديه",
+    "screens": {
+        "login": {
+            "buttons": {
+                "login": "تسجيل الدخول"
+            },
+            "inputs": {
+                "username": "رقم الهاتف",
+                "password": "كلمة المرور"
+            },
+            "labels": {}
+        }
+    }
 }
