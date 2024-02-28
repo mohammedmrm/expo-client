@@ -4,8 +4,8 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback, useEffect } from "react";
 import { default as mapping } from "./assets/mapping.json";
-
-import theme from "./assets/theme.json";
+import theme from "./assets/theme";
+import { MainProvider } from "./src/contexts/MainContext";
 import { AppNavigator } from "./src/navigaters/AppNavigater";
 
 SplashScreen.preventAutoHideAsync();
@@ -30,12 +30,14 @@ export default function App() {
   }, [onLayoutRootView]);
   if (!appIsReady) return null;
   return (
-    <ApplicationProvider
-      {...eva}
-      theme={{ ...eva.light, ...theme }}
-      customMapping={mapping}
-    >
-      <AppNavigator />
-    </ApplicationProvider>
+    <MainProvider>
+      <ApplicationProvider
+        {...eva}
+        theme={{ ...eva.light, ...theme }}
+        customMapping={mapping}
+      >
+        <AppNavigator />
+      </ApplicationProvider>
+    </MainProvider>
   );
 }

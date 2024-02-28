@@ -1,11 +1,5 @@
 import { AppIconsPack } from "@/components/common/AppIcon";
-import { BottomNavigater } from "@/navigaters/BottomNavigater";
-import {
-  Avatar,
-  IconRegistry,
-  Layout,
-  TopNavigation,
-} from "@ui-kitten/components";
+import { IconRegistry, Layout } from "@ui-kitten/components";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import { ScrollView } from "react-native";
@@ -27,18 +21,7 @@ const Screen = ({ children, ...otherProps }: Props) => {
     >
       <IconRegistry icons={AppIconsPack} />
       <StatusBar style={"dark"} />
-      <TopNavigation
-        title={process.env.EXPO_PUBLIC_COMAPNY_NAME}
-        accessoryRight={() => (
-          <Avatar
-            source={require("../../assets/logo.png")}
-            style={{ borderRadius: 0, padding: 10 }}
-          />
-        )}
-        style={{ backgroundColor: "gray" }}
-      />
       <ScrollView style={{ flex: 1, flexGrow: 1 }}>{children}</ScrollView>
-      <BottomNavigater />
     </Layout>
   );
 };

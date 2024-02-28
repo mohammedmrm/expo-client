@@ -2,6 +2,7 @@ import Home from "@/screens/Home";
 import Profile from "@/screens/Profile";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import BottomNavigater from "./BottomNavigater";
 const { Navigator, Screen } = createStackNavigator();
 
 const HomeNavigator = () => (
@@ -13,6 +14,6 @@ const HomeNavigator = () => (
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <HomeNavigator />
+    <BottomNavigater />
   </NavigationContainer>
 );
