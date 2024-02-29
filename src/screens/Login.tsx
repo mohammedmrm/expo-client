@@ -1,24 +1,24 @@
 import { AppViewPager } from "@/components/common/AppViewPager";
+import { useThemeContext } from "@/contexts/themeContext";
 import { useI18nContext } from "@/i18n/I18nContext";
 import Screen from "@/screens/screen";
-import {
-  Button,
-  Icon,
-  Input,
-  Layout,
-  Text,
-  useTheme,
-} from "@ui-kitten/components";
+import { Button, Icon, Input, Layout, Text } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "@ui-kitten/components/devsupport";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, ImageBackground, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  View,
+} from "react-native";
 
 export default function Login() {
   const { t } = useTranslation();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const { i18n } = useI18nContext();
-  const theme = useTheme();
+  const { toggleTheme } = useThemeContext();
   const renderIcon = (props: any) => (
     <TouchableWithoutFeedback
       onPress={() => setSecureTextEntry(!secureTextEntry)}
@@ -35,8 +35,17 @@ export default function Login() {
           blurRadius={10}
         >
           <AppViewPager style={{}} />
+
           <Layout style={[styles.formContainer]}>
-            <Text>{t("screens.login.inputs.username")}</Text>
+            <Text style={styles.fromTitle}>
+              {t("screens.login.labels.formTitle")}
+            </Text>
+            <Layout level="2" style={styles.logoContainer}>
+              <Image
+                style={styles.logo}
+                source={require("../../assets/logo.png")}
+              />
+            </Layout>
             <Input placeholder={t("screens.login.inputs.username")} />
             <Input
               placeholder={t("screens.login.inputs.password")}
@@ -47,7 +56,6 @@ export default function Login() {
               {t("screens.login.buttons.login")}
             </Button>
             <Button
-              style={{ marginVertical: 20 }}
               onPress={() =>
                 i18n.language == "en"
                   ? i18n.changeLanguage("ar")
@@ -56,6 +64,7 @@ export default function Login() {
             >
               Change Language
             </Button>
+            <Button onPress={toggleTheme}>Change theme</Button>
           </Layout>
         </ImageBackground>
       </View>
@@ -66,6 +75,21 @@ const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+  },
+  logoContainer: {
+    width: 120,
+    margin: 10,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 10,
+    elevation: 10,
   },
   background: {
     flex: 1,
@@ -79,5 +103,10 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     elevation: 10,
+  },
+  fromTitle: {
+    alignSelf: "center",
+    fontSize: 30,
+    margin: 5,
   },
 });

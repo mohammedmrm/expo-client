@@ -45,21 +45,20 @@ export const AppViewPager = ({
               <ImageBackground
                 source={{ uri: ad.image }} // Replace this with your image path
                 style={styles.background}
-              >
-                <View style={styles.dotContainer}>
-                  {data.map((ad, idx) => {
-                    return idx === selectedIndex ? (
-                      <View style={[styles.dot, styles.active]} />
-                    ) : (
-                      <View style={styles.dot} />
-                    );
-                  })}
-                </View>
-              </ImageBackground>
+              ></ImageBackground>
             </View>
           </Layout>
         ))}
       </ViewPager>
+      <View style={styles.dotContainer}>
+        {data.map((ad, idx) => {
+          return idx === selectedIndex ? (
+            <View style={styles.active} key={idx} />
+          ) : (
+            <View style={styles.dot} key={idx} />
+          );
+        })}
+      </View>
     </>
   );
 };
@@ -85,8 +84,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   dotContainer: {
-    position: "absolute",
-    bottom: 10, // Adjust this value as needed to change the vertical position of the dots
+    top: -30, // Adjust this value as needed to change the vertical position of the dots
     flexDirection: "row",
     gap: 5,
     justifyContent: "center",

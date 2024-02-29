@@ -4,7 +4,8 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useCallback, useEffect } from "react";
 import { default as mapping } from "./assets/mapping.json";
-import theme from "./assets/theme.json";
+import themes from "./assets/theme.json";
+import { ThemeContext } from "./src/contexts/themeContext";
 import { I18nProvider } from "./src/i18n/I18nContext";
 import { AppNavigator } from "./src/navigaters/AppNavigater";
 
@@ -19,7 +20,12 @@ export default function App() {
     "f-Medium": require("./assets/fonts/Cairo-Medium.ttf"),
     "f-ExtraLight": require("./assets/fonts/Cairo-ExtraLight.ttf"),
   });
+  const [theme, setTheme] = React.useState("light");
 
+  const toggleTheme = () => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+  };
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
@@ -31,14 +37,15 @@ export default function App() {
   if (!appIsReady) return null;
   return (
     <I18nProvider>
-      <ApplicationProvider
-        {...eva}
-        theme={{ ...eva.light, ...theme ,}}
-        customMapping={{ ...eva.mapping, ...mapping }}
-        
-      >
-        <AppNavigator />
-      </ApplicationProvider>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ApplicationProvider
+          {...eva}
+          theme={{ ...eva[theme], ...themes }}
+          customMapping={{ ...eva.mapping, ...mapping }}
+        >
+          <AppNavigator />
+        </ApplicationProvider>
+      </ThemeContext.Provider>
     </I18nProvider>
   );
 }

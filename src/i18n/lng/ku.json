@@ -9,7 +9,9 @@
                 "username": "رقم الهاتف",
                 "password": "كلمة المرور"
             },
-            "labels": {}
+            "labels": {
+                "formTitle": "تسجيل الدخول"
+            }
         }
     }
 }

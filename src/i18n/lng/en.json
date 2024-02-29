@@ -10,7 +10,9 @@
                 "username": "Phone number",
                 "password": "Password"
             },
-            "labels": {}
+            "labels": {
+                "formTitle": "Login"
+            }
         }
     }
 }

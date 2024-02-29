@@ -1,14 +1,7 @@
 import { resources } from "@/i18n/resources";
 import * as Localization from "expo-localization"; // Import expo-localization
 import i18n from "i18next";
-import React, {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useContext,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useContext, useRef } from "react";
 import { initReactI18next } from "react-i18next";
 
 i18n.use(initReactI18next).init({
@@ -25,8 +18,8 @@ i18n.use(initReactI18next).init({
 const I18nContext = createContext({
   i18n,
   setlng: (language: string) => {},
-  light: true,
-  setLight: {} as Dispatch<SetStateAction<boolean>>,
+  theme: "light",
+  toggleTheme: () => {},
 });
 
 interface Props {
@@ -34,21 +27,24 @@ interface Props {
 }
 
 export const I18nProvider: React.FC<Props> = ({ children }) => {
-  const [light, setLight] = useState<boolean>(true);
+  const [theme, setTheme] = React.useState<"light" | "dark">("light");
   const supportedLocales = useRef(Object.keys(resources));
   const setlng = (lng: string) => {
     if (supportedLocales.current.includes(lng)) {
       i18n.changeLanguage(lng);
     }
   };
-
+  const toggleTheme = () => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+  };
   return (
     <I18nContext.Provider
       value={{
         i18n,
         setlng,
-        light,
-        setLight,
+        theme,
+        toggleTheme,
       }}
     >
       {children}
