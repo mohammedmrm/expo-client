@@ -46,7 +46,10 @@ export default function Login() {
                 source={require("../../assets/logo.png")}
               />
             </Layout>
-            <Input placeholder={t("screens.login.inputs.username")} />
+            <Input
+              placeholder={t("screens.login.inputs.username")}
+              keyboardType="number-pad"
+            />
             <Input
               placeholder={t("screens.login.inputs.password")}
               accessoryLeft={renderIcon}

@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   dotContainer: {
-    top: -30, // Adjust this value as needed to change the vertical position of the dots
+    top: -30,
     flexDirection: "row",
     gap: 5,
     justifyContent: "center",
