@@ -1,7 +1,14 @@
 import { resources } from "@/i18n/resources";
 import * as Localization from "expo-localization"; // Import expo-localization
 import i18n from "i18next";
-import React, { createContext, useContext, useRef } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { initReactI18next } from "react-i18next";
 
 i18n.use(initReactI18next).init({
@@ -18,6 +25,8 @@ i18n.use(initReactI18next).init({
 const I18nContext = createContext({
   i18n,
   setlng: (language: string) => {},
+  light: true,
+  setLight: {} as Dispatch<SetStateAction<boolean>>,
 });
 
 interface Props {
@@ -25,6 +34,7 @@ interface Props {
 }
 
 export const I18nProvider: React.FC<Props> = ({ children }) => {
+  const [light, setLight] = useState<boolean>(true);
   const supportedLocales = useRef(Object.keys(resources));
   const setlng = (lng: string) => {
     if (supportedLocales.current.includes(lng)) {
@@ -37,6 +47,8 @@ export const I18nProvider: React.FC<Props> = ({ children }) => {
       value={{
         i18n,
         setlng,
+        light,
+        setLight,
       }}
     >
       {children}

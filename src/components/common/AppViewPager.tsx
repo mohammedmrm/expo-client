@@ -1,48 +1,66 @@
-import { Layout, Text, ViewPager, useTheme } from "@ui-kitten/components";
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Layout, ViewPager, ViewPagerProps } from "@ui-kitten/components";
+import React, { useEffect, useState } from "react";
+import { ImageBackground, StyleSheet, View } from "react-native";
+import theme from "../../../assets/theme.json";
+export const AppViewPager = ({
+  ...props
+}: ViewPagerProps): React.ReactElement => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const data = [
+    {
+      image: "https://picsum.photos/300/192?anmils",
+      title: "Ad title 1",
+      description: "Ad description",
+    },
+    {
+      image: "https://picsum.photos/300/192?dogs",
+      title: "Ad title 2",
+      description: "Ad description 3",
+    },
+    {
+      image: "https://picsum.photos/300/192?cat",
+      title: "Ad title 3",
+      description: "Ad description 3",
+    },
+  ];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSelectedIndex((prevIndex) =>
+        prevIndex === data.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-export const AppViewPager = (): React.ReactElement => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const theme = useTheme();
   return (
-    <ViewPager
-      selectedIndex={selectedIndex}
-      onSelect={(index) => setSelectedIndex(index)}
-    >
-      <Layout style={styles.tab} level="2">
-        <View style={{ top: -15, left: -20, position: "absolute" }}>
-          <View
-            style={{
-              backgroundColor: theme["color-primary-500"],
-              height: 150,
-              width: 150,
-              borderRadius: 100,
-              marginTop: -100,
-              position: "absolute",
-              opacity: 0.5,
-            }}
-          />
-          <View
-            style={{
-              backgroundColor: theme["color-primary-600"],
-              height: 150,
-              width: 150,
-              borderRadius: 100,
-              marginLeft: -100,
-              position: "absolute",
-              opacity: 0.4,
-            }}
-          />
-        </View>
-      </Layout>
-      <Layout style={styles.tab} level="2">
-        <Text category="h5">ORDERS</Text>
-      </Layout>
-      <Layout style={styles.tab} level="2">
-        <Text category="h5">TRANSACTIONS</Text>
-      </Layout>
-    </ViewPager>
+    <>
+      <ViewPager
+        selectedIndex={selectedIndex}
+        onSelect={(index) => setSelectedIndex(index)}
+        {...props}
+      >
+        {data.map((ad, idx) => (
+          <Layout style={styles.tab} key={idx}>
+            <View style={styles.AdImage}>
+              <ImageBackground
+                source={{ uri: ad.image }} // Replace this with your image path
+                style={styles.background}
+              >
+                <View style={styles.dotContainer}>
+                  {data.map((ad, idx) => {
+                    return idx === selectedIndex ? (
+                      <View style={[styles.dot, styles.active]} />
+                    ) : (
+                      <View style={styles.dot} />
+                    );
+                  })}
+                </View>
+              </ImageBackground>
+            </View>
+          </Layout>
+        ))}
+      </ViewPager>
+    </>
   );
 };
 
@@ -50,7 +68,43 @@ const styles = StyleSheet.create({
   tab: {
     overflow: "hidden",
     height: 192,
+    margin: 10,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+  },
+  background: {
+    flex: 1,
+    resizeMode: "contain",
+    alignContent: "center",
+    justifyContent: "flex-end",
+    alignItems: "baseline",
+  },
+  AdImage: {
+    width: "100%",
+    height: "100%",
+  },
+  dotContainer: {
+    position: "absolute",
+    bottom: 10, // Adjust this value as needed to change the vertical position of the dots
+    flexDirection: "row",
+    gap: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 100,
+    backgroundColor: theme["color-basic-500"],
+    opacity: 0.7,
+  },
+  active: {
+    width: 10,
+    height: 10,
+    borderRadius: 100,
+    backgroundColor: theme["color-primary-500"],
+    opacity: 0.8,
   },
 });

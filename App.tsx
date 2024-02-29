@@ -33,8 +33,9 @@ export default function App() {
     <I18nProvider>
       <ApplicationProvider
         {...eva}
-        theme={{ ...eva.light, ...theme }}
+        theme={{ ...eva.light, ...theme ,}}
         customMapping={{ ...eva.mapping, ...mapping }}
+        
       >
         <AppNavigator />
       </ApplicationProvider>
