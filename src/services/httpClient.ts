@@ -1,40 +1,44 @@
-import { Err, MWError } from "@/types";
-import { z } from "zod";
+import { Err, MWError } from '@/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios, { AxiosInstance } from 'axios';
+import { z } from 'zod';
 
 const MWResponse = MWError.or(z.array(MWError.or(z.any())).length(1));
 
 export class HttpClient {
   baseURL: string | undefined;
-
+  apiClient: AxiosInstance;
   constructor(baseURL: string | undefined) {
     this.baseURL = baseURL;
+    this.apiClient = axios.create({
+      baseURL: this.baseURL,
+    });
   }
 
-  private authHeaders() {
-    const jwt = localStorage.getItem("jwt");
+  private async authHeaders() {
+    const jwt = await AsyncStorage.getItem('jwt');
 
     if (jwt) {
       return {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: jwt,
       };
     }
-    return { Authorization: "" };
+    return { Authorization: '' };
   }
 
-  private prepare_request(input: any, headers = {}, method = "POST") {
-    const body = {
-      richiesta: [input],
-      formatoOutput: "JSON",
-    };
-
+  private async prepare_request(input: any = {}, headers = {}, method = 'POST') {
     const requestOptions = {
       method: method,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...headers,
-        ...this.authHeaders(),
+        ...(await this.authHeaders()),
       },
-      body: JSON.stringify(body),
+      data: input,
+      insecure: true,
+      httpsAgent: {
+        rejectUnauthorized: false,
+      },
     };
 
     return requestOptions;
@@ -49,13 +53,10 @@ export class HttpClient {
     T extends z.ZodObject<TT, TUN, TCAT, TO, TI>
   >(json: any, t: T): TO {
     const mwResp = MWResponse.parse(json);
-    if ("errorCode" in mwResp) {
-      throw mwResp as Err;
-    }
     return t.parse(mwResp);
   }
 
-  post<
+  async post<
     TT extends z.ZodRawShape,
     TUN extends z.UnknownKeysParam,
     TCAT extends z.ZodTypeAny,
@@ -63,18 +64,18 @@ export class HttpClient {
     TI,
     T extends z.ZodObject<TT, TUN, TCAT, TO, TI>
   >(endPoint: string, body: object = {}, t: T): Promise<TO> {
-    const _url = this.baseURL + endPoint;
-
-    return fetch(_url, this.prepare_request(body))
+    const requestOptions = await this.prepare_request(body);
+    return this.apiClient
+      .post(endPoint, { ...requestOptions, insecure: true })
       .then((resp) => {
-        return resp.json();
+        return resp.data;
       })
       .then((json) => {
         const resp: TO = this.parse_response(json, t);
-
         return resp;
       })
       .catch((err) => {
+        console.log(err);
         throw err as Err;
       });
   }

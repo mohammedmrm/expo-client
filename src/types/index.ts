@@ -1,8 +1,8 @@
-import z from "zod";
+import z from 'zod';
 
 export const MWError = z
   .object({
-    errorCode: z.string(),
+    errorCode: z.string().optional(),
   })
   .catchall(z.any());
 export type Err = z.infer<typeof MWError>;
